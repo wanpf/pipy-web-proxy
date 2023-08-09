@@ -1,0 +1,10 @@
+[
+  {
+    "allowDomainSuffix": [],
+    "denyDomainSuffix": [],
+    "servers": [
+      "svc-1",
+      "svc-2"
+    ]
+  }
+]

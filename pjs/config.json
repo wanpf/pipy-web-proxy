@@ -1,0 +1,32 @@
+{
+  "configs": {
+    "enableDebug": true
+  },
+  "servers": {
+    "0.0.0.0:6060": {
+      "enableProxyAuth": false,
+      "serviceName": "svc-1"
+    }
+  },
+  "policies": {
+    "connectTimeout": "3s",
+    "idleTimeout": "30s"
+  },
+  "accessLog": [
+    {
+      "url": "http://192.168.123.1:8123/?query=insert%20into%20log(message)%20format%20JSONAsString",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Basic ZGVmYXVsdDoxMjM0NTY="
+      },
+      "batch": {
+        "timeout": 1,
+        "interval": 1,
+        "size": 100,
+        "prefix": "[",
+        "postfix": "]",
+        "separator": ","
+      }
+    }
+  ]
+}

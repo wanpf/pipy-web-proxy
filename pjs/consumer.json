@@ -1,0 +1,27 @@
+[
+  {
+    "name": "test",
+    "password": "123456",
+    "allowDomainSuffix": [
+      "flomesh.io",
+      "flomesh.cn",
+      ".flomesh.io",
+      ".flomesh.cn"
+    ],
+    "servers": [
+      "svc-1",
+      "svc-2"
+    ]
+  },
+  {
+    "name": "test2",
+    "password": "12345678",
+    "denyDomainSuffix": [
+      ".baidu.com",
+      ".google.com"
+    ],
+    "servers": [
+      "svc-1"
+    ]
+  }
+]
