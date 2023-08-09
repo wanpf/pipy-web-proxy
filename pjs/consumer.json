@@ -3,8 +3,6 @@
     "name": "test",
     "password": "123456",
     "allowDomainSuffix": [
-      "flomesh.io",
-      "flomesh.cn",
       ".flomesh.io",
       ".flomesh.cn"
     ],

@@ -204,7 +204,7 @@ pipy({
         initAccessLog(__server.serviceName, _user?.name, _type, _domain, Boolean(_allowed), _target, _path),
         accessLog.log(_accessLogStruct),
         config?.configs?.enableDebug && (
-          console.log('http access log:', _accessLogStruct)
+          console.log('https access log, response:', _accessLogStruct, '#', _message)
         )
       )
     )
@@ -245,7 +245,7 @@ pipy({
       initAccessLog(__server.serviceName, _user?.name, _type, _domain, Boolean(_allowed), _target, _path),
       accessLog.log(_accessLogStruct),
       config?.configs?.enableDebug && (
-        console.log('https access log:', _accessLogStruct)
+        console.log('https access log, response:', _accessLogStruct, '#', _message)
       )
     ),
     _message ? _message : new Message({ status: 200 })

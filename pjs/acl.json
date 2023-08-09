@@ -1,7 +1,9 @@
 [
   {
     "allowDomainSuffix": [],
-    "denyDomainSuffix": [],
+    "denyDomainSuffix": [
+      ".xyz001.com"
+    ],
     "servers": [
       "svc-1",
       "svc-2"
