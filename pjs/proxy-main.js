@@ -70,6 +70,7 @@
     _accessLogStruct = { trace: { id: algo.uuid() } },
     _accessLogStruct.req = { protocol: 'Proxy', path: __inbound.localAddress },
     _accessLogStruct.sid = __inbound.id,
+    _accessLogStruct.serviceId = config.serviceId,
     _accessLogStruct.iid = os.env.LB_ID || config.instanceID || '',
     _accessLogStruct.proto = 'Proxy',
     _accessLogStruct.node = { ip: os.env.NODE_IP || '127.0.0.1' },
