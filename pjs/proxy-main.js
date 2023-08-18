@@ -88,7 +88,7 @@
       target,
       ...path && { path }
     },
-    _accessLogStruct.reqTime = Date.now()
+    _accessLogStruct.timestamp = Date.now()
   ),
 
 ) => (
