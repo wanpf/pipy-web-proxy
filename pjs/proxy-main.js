@@ -198,7 +198,7 @@ pipy({
         _domain = _target,
         _target = _target + ':80'
       ),
-      !(_allowed = checkDomain(__server, _user, _domain)) && (
+      !(_allowed = checkDomain(__server, _user, config?.configs?.enableAclWithPort ? _target : _domain)) && (
         _message = new Message({ status: 403 }, 'domain is not allowed!')
       ),
       accessLog && (
@@ -239,7 +239,7 @@ pipy({
       _domain = _target,
       _target = _target + ':443'
     ),
-    !(_allowed = checkDomain(__server, _user, _domain)) && (
+    !(_allowed = checkDomain(__server, _user, config?.configs?.enableAclWithPort ? _target : _domain)) && (
       _message = new Message({ status: 403 }, 'domain is not allowed!')
     ),
     accessLog && (

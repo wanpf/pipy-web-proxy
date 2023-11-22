@@ -1,5 +1,6 @@
 {
   "configs": {
+    "enableAclWithPort": false,
     "enableDebug": true
   },
   "servers": {
