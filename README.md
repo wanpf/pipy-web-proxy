@@ -60,6 +60,7 @@ servers： web-proxy 服务列表
 ```json
 {
   "configs": {
+    "enableAclWithPort": false,
     "enableDebug": true
   },
   "servers": {
@@ -92,3 +93,5 @@ servers： web-proxy 服务列表
 }
 ```
 enableProxyAuth: 是否开启 Basic 认证，开启后需要输入用户名、密码。  
+enableAclWithPort: 检查上游域名/IP是否允许访问时带上端口号。   
+
