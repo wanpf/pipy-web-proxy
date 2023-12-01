@@ -1,33 +1,18 @@
 {
   "configs": {
     "enableAclWithPort": false,
-    "enableDebug": true
+    "enableDebug": false,
+    "accessLogSaveToSQLite": true,
+    "accessLogQueryPort": 6060
   },
   "servers": {
-    "0.0.0.0:6060": {
-      "enableProxyAuth": true,
-      "serviceName": "svc-1"
+    "0.0.0.0:9090": {
+      "enableProxyAuth": false,
+      "serviceName": "web-proxy-1"
     }
   },
   "policies": {
     "connectTimeout": "3s",
     "idleTimeout": "30s"
-  },
-  "accessLog": [
-    {
-      "url": "http://192.168.123.1:8123/?query=insert%20into%20log(message)%20format%20JSONAsString",
-      "headers": {
-        "Content-Type": "application/json",
-        "Authorization": "Basic ZGVmYXVsdDoxMjM0NTY="
-      },
-      "batch": {
-        "timeout": 1,
-        "interval": 1,
-        "size": 100,
-        "prefix": "[",
-        "postfix": "]",
-        "separator": ","
-      }
-    }
-  ]
+  }
 }
