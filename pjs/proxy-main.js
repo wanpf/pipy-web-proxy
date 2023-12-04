@@ -6,7 +6,6 @@
   {
     insert_access_log,
     update_access_duration,
-    list_access_log,
   } = pipy.solve('db.js'),
 
   serversACL = {},
@@ -136,56 +135,6 @@ pipy({
     consumer = JSON.decode(pipy.load('consumer.json')),
     reloadConsumer(consumer),
     new StreamEnd
-  )
-)
-
-.branch(
-  config?.configs?.accessLogQueryPort > 0, (
-    $=>$
-    .listen(config.configs.accessLogQueryPort)
-    .demuxHTTP().to(
-      $=>$.replaceMessage(
-        msg => (
-          (
-            records = list_access_log() || [],
-            data = new Data
-          ) => (
-            data.push('<table style="border: 1px solid black; border-collapse: collapse;"><thead><th style="border: 1px solid black; border-collapse: collapse;">id</th><th style="border: 1px solid black; border-collapse: collapse;">scheme</th><th style="border: 1px solid black; border-collapse: collapse;">access_time</th><th style="border: 1px solid black; border-collapse: collapse;">access_duration</th><th style="border: 1px solid black; border-collapse: collapse;">host</th><th style="border: 1px solid black; border-collapse: collapse;">url</th><th style="border: 1px solid black; border-collapse: collapse;">user_agent</th></thead><tbody>'),
-            records.forEach(
-              row => (
-                data.push('<tr style="border: 1px solid black; border-collapse: collapse;"><td>'),
-                data.push('' + row.id),
-                data.push('</td>'),
-                data.push('<td style="border: 1px solid black; border-collapse: collapse;">'),
-                data.push(row.scheme),
-                data.push('</td>'),
-                data.push('<td style="border: 1px solid black; border-collapse: collapse;">'),
-                data.push(row.access_time),
-                data.push('</td>'),
-                data.push('<td style="border: 1px solid black; border-collapse: collapse;">'),
-                row.access_duration == -1 ? (
-                  data.push('in progress')
-                ) : (
-                  data.push('' + row.access_duration)
-                ),
-                data.push('</td>'),
-                data.push('<td style="border: 1px solid black; border-collapse: collapse;">'),
-                data.push(row.host),
-                data.push('</td>'),
-                data.push('<td style="border: 1px solid black; border-collapse: collapse;">'),
-                data.push(row.url),
-                data.push('</td>'),
-                data.push('<td style="border: 1px solid black; border-collapse: collapse;">'),
-                data.push(row.user_agent),
-                data.push('</td></tr>')
-              )
-            ),
-            data.push('</tbody></table>'),
-            new Message({ status: 200 }, data.toString())
-          )
-        )()
-      )
-    )
   )
 )
 
