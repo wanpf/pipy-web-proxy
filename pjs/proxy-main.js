@@ -5,7 +5,7 @@
 
   {
     insert_access_log,
-    update_access_duration,
+    update_response_time,
   } = pipy.solve('db.js'),
 
   serversACL = {},
@@ -114,6 +114,7 @@ pipy({
   _accessLogStruct: null,
   _beginTime: undefined,
   _newRecord: undefined,
+  _statusCode: 0,
 })
 
 .import({
@@ -171,7 +172,7 @@ pipy({
           ),
           config?.configs?.accessLogSaveToSQLite && (
             _beginTime = new Date(),
-            _newRecord = insert_access_log(_type, _beginTime.toString(), -1, msg?.head?.headers?.host || '', msg?.head?.path || '', msg?.head?.headers?.['user-agent'] || '')
+            _newRecord = insert_access_log(_type, __inbound.remoteAddress, msg?.head?.headers?.host || '', msg?.head?.path || '', msg?.head?.headers?.['user-agent'] || '')
           )
         )
       )
@@ -239,9 +240,12 @@ pipy({
     )
   )
 )
+.handleMessageStart(
+  msg => _statusCode = (msg?.head?.status ? +msg.head.status : 0)
+)
 .handleMessageEnd(
   () => _newRecord?.id && (
-    update_access_duration(_newRecord?.id, new Date() - _beginTime)
+    update_response_time(_newRecord?.id, new Date() - _beginTime, _statusCode)
   )
 )
 
@@ -272,7 +276,7 @@ pipy({
 )
 .handleStreamEnd(
   () => _newRecord?.id && (
-    update_access_duration(_newRecord?.id, new Date() - _beginTime)
+    update_response_time(_newRecord?.id, new Date() - _beginTime, _statusCode)
   )
 )
 
