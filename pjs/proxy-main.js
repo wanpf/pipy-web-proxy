@@ -119,6 +119,8 @@ pipy({
 
 .import({
   __server: 'main',
+  __domain: 'ssl',
+  __target: 'ssl',
 })
 
 .watch('acl.json')
@@ -163,8 +165,10 @@ pipy({
           !_message && (
             (msg?.head?.method === 'CONNECT') ? (
               _type = 'https'
-            ) : msg?.head?.path?.startsWith('http://') && (
+            ) : msg?.head?.path?.startsWith('http://') ? (
               _type = 'http'
+            ) : (
+              _type = "unsurport"
             )
           ),
           config?.configs?.enableDebug && (
@@ -172,7 +176,9 @@ pipy({
           ),
           config?.configs?.accessLogSaveToSQLite && (
             _beginTime = new Date(),
-            _newRecord = insert_access_log(_type, __inbound.remoteAddress, msg?.head?.headers?.host || '', msg?.head?.path || '', msg?.head?.headers?.['user-agent'] || '')
+            ((_type !== 'https') || !config?.configs?.sslInterception) && (
+              _newRecord = insert_access_log(_type, __inbound.remoteAddress, msg?.head?.headers?.host || '', msg?.head?.path || '', msg?.head?.headers?.['user-agent'] || '')
+            )
           )
         )
       )
@@ -272,7 +278,22 @@ pipy({
     _message ? _message : new Message({ status: 200 })
   )
 ).to(
-  $=>$.link('connect')
+  $=>$
+  .branch(
+    () => config?.configs?.sslInterception, (
+      $=>$
+      .onStart(
+        () => void (
+          __domain = _domain,
+          __target = _target
+        )
+      )
+      .use('ssl.js', 'ssl-intercept')
+    ),
+    (
+      $=>$.link('connect')
+    )
+  )
 )
 .handleStreamEnd(
   () => _newRecord?.id && (

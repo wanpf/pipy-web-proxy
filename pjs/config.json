@@ -1,5 +1,6 @@
 {
   "configs": {
+    "sslInterception": true,
     "enableAclWithPort": false,
     "enableDebug": false,
     "accessLogSaveToSQLite": true,
