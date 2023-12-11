@@ -25,7 +25,7 @@
     .listen(config?.configs?.accessLogQueryPort)
     .serveHTTP((
       (
-        db = sqlite('access_log.db'),
+        db = sqlite('pipy.db'),
         headers = { 'content-type': 'application/json' },
         web = new http.Directory('/admin', {
           fs: false,

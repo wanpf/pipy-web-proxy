@@ -1,12 +1,12 @@
 ((
-  db = sqlite('access_log.db')
+  db = sqlite('pipy.db')
 ) => (
 
   db.exec(
-    `SELECT * FROM sqlite_schema WHERE type = 'table' AND name = 'access_log'`
+    `SELECT * FROM sqlite_schema WHERE type = 'table' AND name = 'pipy'`
   ).length === 0 && (
     db.exec(`
-      CREATE TABLE access_log (
+      CREATE TABLE pipy (
         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
         scheme TEXT NOT NULL,
         request_time TIMESTAMP DEFAULT (datetime('now','localtime')),
@@ -22,9 +22,9 @@
 
   {
 
-    insert_access_log: (scheme, client_ip, host, url, user_agent) => (
+    insert_pipy: (scheme, client_ip, host, url, user_agent) => (
       db.sql(
-        `INSERT INTO access_log (scheme, client_ip, host, url, user_agent) VALUES (?, ?, ?, ?, ?)`
+        `INSERT INTO pipy (scheme, client_ip, host, url, user_agent) VALUES (?, ?, ?, ?, ?)`
       )
       .bind(1, scheme)
       .bind(2, client_ip)
@@ -33,21 +33,21 @@
       .bind(5, user_agent)
       .exec(),
       db.sql(
-        `SELECT * FROM access_log WHERE id = last_insert_rowid()`
+        `SELECT * FROM pipy WHERE id = last_insert_rowid()`
       )
       .exec()[0]
     ),
 
     update_response_time: (id, response_time, response_code) => (
       db.sql(
-        `UPDATE access_log SET response_time = ?, response_code = ? WHERE id = ?`
+        `UPDATE pipy SET response_time = ?, response_code = ? WHERE id = ?`
       )
       .bind(1, response_time)
       .bind(2, response_code)
       .bind(3, id)
       .exec(),
       db.sql(
-        `SELECT * FROM access_log WHERE id = ${id}`
+        `SELECT * FROM pipy WHERE id = ${id}`
       )
       .exec()[0]
     ),

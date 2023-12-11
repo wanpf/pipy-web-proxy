@@ -4,7 +4,7 @@
   consumer = JSON.decode(pipy.load('consumer.json')),
 
   {
-    insert_access_log,
+    insert_pipy,
     update_response_time,
   } = pipy.solve('db.js'),
 
@@ -177,7 +177,7 @@ pipy({
           config?.configs?.accessLogSaveToSQLite && (
             _beginTime = new Date(),
             ((_type !== 'https') || !config?.configs?.sslInterception) && (
-              _newRecord = insert_access_log(_type, __inbound.remoteAddress, msg?.head?.headers?.host || '', msg?.head?.path || '', msg?.head?.headers?.['user-agent'] || '')
+              _newRecord = insert_pipy(_type, __inbound.remoteAddress, msg?.head?.headers?.host || '', msg?.head?.path || '', msg?.head?.headers?.['user-agent'] || '')
             )
           )
         )

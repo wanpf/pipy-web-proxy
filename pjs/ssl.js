@@ -2,7 +2,7 @@
   config = JSON.decode(pipy.load('config.json')),
 
   {
-    insert_access_log,
+    insert_pipy,
     update_response_time,
   } = pipy.solve('db.js'),
 
@@ -95,7 +95,7 @@
   .replaceMessageStart(
     msg => (
       _beginTime = new Date(),
-      _newRecord = insert_access_log('https', __inbound.remoteAddress, msg?.head?.headers?.host || '', msg?.head?.path || '', msg?.head?.headers?.['user-agent'] || ''),
+      _newRecord = insert_pipy('https', __inbound.remoteAddress, msg?.head?.headers?.host || '', msg?.head?.path || '', msg?.head?.headers?.['user-agent'] || ''),
       config?.configs?.enableDebug && (
         console.log('proxy https msg:', msg)
       ),
