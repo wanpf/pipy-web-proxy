@@ -8,12 +8,17 @@
 
   sslCache = new algo.Cache(null, null, { ttl: 587520 }),
 
+  topDomains = ['com', 'org', 'net', 'edu', 'gov', 'mil', 'int'],
+
   genericDomainName = domain => (
     (
+      first = domain.charAt(0),
       pos = domain.indexOf('.'),
     ) => (
-      (pos > 0 && domain.indexOf('.', pos + 1) > 0) ? (
-        '*' + domain.substring(pos)
+      (first >= '0' && first <= '9') ? (
+        domain
+      ) : (pos > 0 && domain.indexOf('.', pos + 1) > 0) ? (
+        topDomains.includes(domain.split('.')[1]) ? domain : '*' + domain.substring(pos)
       ) : (
         domain
       )
@@ -98,7 +103,7 @@
       msg
     )
   )
-  .muxHTTP(() => __target, {
+  .muxHTTP(() => __inbound, {
     version: () => new Promise(f => _selectProtocol = f)
   }).to(
     $=>$
