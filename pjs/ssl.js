@@ -31,10 +31,10 @@
       crt,
       key,
     ) => (
-      pipy.exec('/usr/local/flomesh/mkcrt/mak.sh ' + gdn),
-      crt = os.readFile('/usr/local/flomesh/mkcrt/temp/domain.cer')?.toString?.(),
-      key = os.readFile('/usr/local/flomesh/mkcrt/temp/domain.key')?.toString?.(),
-      console.log("[ssl] - make ssl for:", domain, gdn),
+      pipy.exec('/opt/flomesh/mkcrt/mak.sh ' + gdn),
+      crt = os.readFile('/opt/flomesh/mkcrt/temp/domain.cer')?.toString?.(),
+      key = os.readFile('/opt/flomesh/mkcrt/temp/domain.key')?.toString?.(),
+      console.log("[ssl] - Make certificate for:", domain, gdn),
       {
         domain: gdn,
         crt: crt && new crypto.Certificate(crt.replaceAll('\\n', '\n')),
@@ -110,7 +110,7 @@
     .connectTLS({
       sni: () => __domain,
       alpn: ['h2', 'http/1.1'],
-      handshake: ({ alpn }) => _selectProtocol(alpn),
+      handshake: ({ alpn }) => _selectProtocol(alpn || 'http/1.1'),
     }).to(
       $=>$.link('connect')
     )

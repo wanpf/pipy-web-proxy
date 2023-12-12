@@ -1,9 +1,20 @@
-# 将 http/https 代理日志写入 SQLite 数据库    
-# 1. 启动 pipy-web-proxy 服务  
-命令： pipy pjs/main.js
-# 2. 浏览器设置 http/https 代理  
-代理地址：代理服务器IP地址:9090  
-代理服务端口为 9090  
-# 3. 查看访问日志  
-浏览器访问：http://代理服务器IP地址:6060  
-<img width="1890" alt="image" src="https://github.com/wanpf/pipy-web-proxy/assets/2276200/a6e93d55-f0c6-431b-9850-57a8835a9be5">
+    
+一、安装，启动服务，操作步骤：    
+0、需要先安装好 pipy、openssl 这2个程序，    
+  并且加入到 PATH 环境变量，可以直接输入 pipy, openssl 启动程序。    
+1、安装CA根证书，    
+  将 CA.crt 安装到系统，或者安装到浏览器。    
+2、在当前目录下，执行如下2命令，解压证书签发工具包。    
+   sudo mkdir -p /opt/flomesh/    
+   sudo tar zxvf mkcrt.tar.z -C /opt/flomesh/    
+   sudo chmod -R ugo=rwx /opt/flomesh/    
+3、执行如下命令，启动 pipy-proxy 服务。    
+注意：9090、6060 这2个端口需要可用。    
+   pipy pjs/main.js    
+    
+二、测试    
+1、给浏览器设置 http、https 代理，代理地址 IP地址:9090    
+2、浏览器访问 https//www.gov.cn/ 等网站    
+3、浏览器访问 http://IP地址:6060/ 查看 pipy-proxy GUI 网页。    
+    
+
